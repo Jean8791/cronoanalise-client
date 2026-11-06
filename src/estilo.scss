@@ -1,0 +1,16 @@
+.tabela-numerica td.num,
+.tabela-numerica th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.formula {
+  font-family: 'Roboto Mono', ui-monospace, monospace;
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.grade-tempos input {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

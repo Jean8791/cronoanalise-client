@@ -1,107 +1,59 @@
-<template>
-    <div id="home">
-        <v-app id="inspire">
-            <template>
-                <div v-if="autenticado">
-                    <home v-on:sair="sair"></home>
-                </div>
-            </template>
-            <template>
-                <div v-if="!autenticado">
-                    <login v-on:autenticador="autentica"></login>
-                </div>
-            </template>
-        </v-app>
-    </div>
-</template>
+<script setup>
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useDisplay } from 'vuetify'
+import { sessao } from '@/services/sessao'
+import AvisoAcademico from '@/components/AvisoAcademico.vue'
 
-<script>
-    import axios from 'axios';
-    import Home from "./views/Home";
-    import Login from "./views/Login";
-    import Vuetify from 'vuetify/lib';
+const route = useRoute()
+const router = useRouter()
+const { mobile } = useDisplay()
+const gaveta = ref(null)
 
-    export default {
-        name: 'App',
-        vuetify: new Vuetify({
-            theme: {dark: true},
-        }),
-        data: () => ({
-            autenticado: false,
-            usuario: {
-                username: '',
-                password: '',
-            },
-        }),
-        created() {
-            if (localStorage.getItem("autenticado")) {
-                this.autenticado = true;
-            }
-        },
-        methods: {
-            autentica(usuario) {
-                if (usuario.login && usuario.senha) {
-                    this.usuario.username = usuario.login;
-                    this.usuario.password = usuario.senha;
-                    axios.post('http://localhost:8080/authenticate', this.usuario).then(resposta => {
-                        localStorage.removeItem('token');
-                        localStorage.removeItem('permissoes');
-                        localStorage.removeItem('nome');
-                        localStorage.token = resposta.data.token.token;
-                        localStorage.permissoes = resposta.data.token.permissao;
-                        localStorage.nome = resposta.data.token.nome;
-                        this.usuario = {};
-                        localStorage.autenticado = true;
-                        this.autenticado = true;
-                        this.$router.push('/');
-                    }).catch(onError => {
-                        this.onError("Usuário não autenticado");
-                    });
-                } else {
-                    this.onError("Digite o Login e a Senha");
-                }
-            },
-            sair(sair) {
-                this.autenticado = sair;
-                this.usuario = {};
-                this.$router.push('/login');
-                localStorage.removeItem('autenticado');
-                window.location.reload(true);
-            },
-            wait(ms) {
-                var start = new Date().getTime();
-                var end = start;
-                while (end < start + ms) {
-                    end = new Date().getTime();
-                }
-            },
-            onSuccess(msg) {
-                this.$swal.fire({
-                    position: 'top',
-                    type: 'success',
-                    title: 'Sucesso',
-                    text: msg,
-                    showConfirmButton: false,
-                    timer: 2000
-                });
-            },
-            onError(msg) {
-                this.$swal.fire({
-                    position: 'top',
-                    type: 'error',
-                    title: 'Erro',
-                    text: msg,
-                    timer: 2000,
-                })
-            },
-        },
-        components: {
-            Home,
-            Login
-        },
-    };
+const menu = computed(() => [
+  { titulo: 'Início', icone: 'mdi-view-dashboard-outline', rota: 'inicio' },
+  { titulo: 'Cronoanálises', icone: 'mdi-timer-outline', rota: 'cronoanalises' },
+  { titulo: 'Empresas', icone: 'mdi-factory', rota: 'empresas' },
+  { titulo: 'Produtos', icone: 'mdi-package-variant-closed', rota: 'produtos' },
+  ...(sessao.ehAdmin.value ? [{ titulo: 'Usuários', icone: 'mdi-account-group-outline', rota: 'usuarios' }] : []),
+])
+
+const nomesPerfil = { ADMIN: 'Administrador', PROFESSOR: 'Professor', ALUNO: 'Aluno' }
+
+function sair() {
+  sessao.sair()
+  router.push({ name: 'login' })
+}
 </script>
 
-<style>
+<template>
+  <v-app>
+    <template v-if="!route.meta.publica">
+      <v-navigation-drawer v-model="gaveta" :permanent="!mobile" color="primary" width="232">
+        <div class="pa-5 d-flex align-center ga-2">
+          <v-icon icon="mdi-timer-cog-outline" size="28" />
+          <span class="text-h6 font-weight-bold">Cronoanálise</span>
+        </div>
+        <v-list nav density="comfortable">
+          <v-list-item v-for="item in menu" :key="item.rota" :to="{ name: item.rota }" :prepend-icon="item.icone"
+                       :title="item.titulo" rounded="lg" />
+        </v-list>
+      </v-navigation-drawer>
 
-</style>
+      <v-app-bar flat border="b" color="surface">
+        <v-app-bar-nav-icon v-if="mobile" @click="gaveta = !gaveta" />
+        <AvisoAcademico class="ml-4 d-none d-sm-flex" />
+        <v-spacer />
+        <div class="text-right mr-3">
+          <div class="text-body-2 font-weight-medium">{{ sessao.usuario?.nome }}</div>
+          <div class="text-caption text-medium-emphasis">{{ nomesPerfil[sessao.perfil.value] }}</div>
+        </div>
+        <v-btn icon="mdi-logout" variant="text" title="Sair" @click="sair" />
+      </v-app-bar>
+    </template>
+
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
+</template>
