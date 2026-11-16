@@ -131,7 +131,7 @@ async function salvar() {
 </script>
 
 <template>
-  <v-container class="py-8" style="max-width: 1300px">
+  <v-container class="py-6" style="max-width: 1300px">
     <div class="d-flex align-center ga-2 mb-6">
       <v-btn icon="mdi-arrow-left" variant="text" @click="router.back()" />
       <div>
@@ -143,10 +143,11 @@ async function salvar() {
     <v-progress-linear v-if="carregando" indeterminate color="primary" />
 
     <template v-else>
-      <v-row>
+      <v-row dense>
         <v-col cols="12" md="7">
-          <v-card border flat class="pa-5 h-100">
-            <div class="text-subtitle-2 font-weight-bold mb-4">1. Produto e parâmetros</div>
+          <v-card class="painel h-100">
+            <v-card-title>1. Produto e parâmetros</v-card-title>
+            <div class="pa-4">
             <v-autocomplete v-if="!editando" v-model="produtoId" :items="produtos" item-value="id"
                             :item-title="(p) => `${p.codigo} · ${p.nome} (${p.empresa.nome})`" label="Produto"
                             no-data-text="Nenhum produto ativo." />
@@ -161,11 +162,13 @@ async function salvar() {
                               :disabled="editando || !operacoes.length" />
               </v-col>
             </v-row>
+            </div>
           </v-card>
         </v-col>
         <v-col cols="12" md="5">
-          <v-card border flat class="pa-5 h-100" color="grey-lighten-5">
-            <div class="text-subtitle-2 font-weight-bold mb-3">Parâmetros da empresa</div>
+          <v-card class="painel h-100">
+            <v-card-title>Parâmetros da empresa</v-card-title>
+            <div class="pa-4">
             <template v-if="empresa">
               <div class="text-body-1 font-weight-medium mb-2">{{ empresa.nome }}</div>
               <div class="d-flex flex-wrap ga-2 mb-3">
@@ -179,15 +182,19 @@ async function salvar() {
               </p>
             </template>
             <p v-else class="text-body-2 text-medium-emphasis">Escolha um produto para ver o turno, as paradas e os fatores.</p>
+            </div>
           </v-card>
         </v-col>
       </v-row>
 
-      <v-card v-if="operacoes.length" border flat class="mt-6">
-        <div class="d-flex flex-wrap align-center justify-space-between ga-3 pa-5 pb-2">
-          <div>
-            <div class="text-subtitle-2 font-weight-bold">2. Tempos observados (segundos)</div>
-            <div class="text-caption text-medium-emphasis">{{ preenchidas }} de {{ totalCelulas }} preenchidos</div>
+      <v-card v-if="operacoes.length" class="painel mt-3">
+        <v-card-title>2. Tempos observados (segundos)</v-card-title>
+        <div class="d-flex flex-wrap align-center justify-space-between ga-3 px-4 py-2">
+          <div class="d-flex align-center ga-3">
+            <span class="leitura text-primary">{{ preenchidas }}<small>/ {{ totalCelulas }}</small></span>
+            <span class="rotulo">tempos lançados</span>
+            <v-progress-linear :model-value="totalCelulas ? (preenchidas / totalCelulas) * 100 : 0"
+                               :color="completo ? 'success' : 'primary'" height="4" style="width: 120px" />
           </div>
           <v-btn v-if="!editando" variant="text" size="small" prepend-icon="mdi-dice-multiple-outline" @click="preencherExemplo">
             Preencher com valores de exemplo
@@ -211,7 +218,7 @@ async function salvar() {
                 </td>
                 <td class="num font-weight-bold">{{ mediaOperacao(i) === null ? '—' : decimal(mediaOperacao(i)) }}</td>
               </tr>
-              <tr class="bg-grey-lighten-4">
+              <tr class="bg-surface-variant">
                 <td class="text-medium-emphasis">Tempo do ciclo</td>
                 <td v-for="c in Number(ciclos)" :key="c" class="num text-medium-emphasis">
                   {{ tempoCiclo(c - 1) === null ? '—' : decimal(tempoCiclo(c - 1)) }}
@@ -223,9 +230,9 @@ async function salvar() {
         </div>
       </v-card>
 
-      <v-alert v-if="erro" type="error" variant="tonal" class="mt-6">{{ erro }}</v-alert>
+      <v-alert v-if="erro" type="error" variant="tonal" class="mt-4">{{ erro }}</v-alert>
 
-      <div class="d-flex justify-end ga-3 mt-6">
+      <div class="d-flex justify-end ga-3 mt-4">
         <v-btn variant="text" @click="router.back()">Cancelar</v-btn>
         <v-btn color="primary" size="large" prepend-icon="mdi-calculator-variant-outline" :loading="salvando"
                :disabled="!operacoes.length" @click="salvar">
