@@ -37,16 +37,18 @@ async function entrar(credenciais = { login: login.value, senha: senha.value }) 
 </script>
 
 <template>
-  <v-container class="fill-height" fluid>
+  <v-container class="fill-height fundo-grade" fluid>
     <v-row justify="center" align="center">
       <v-col cols="12" sm="8" md="5" lg="4">
-        <div class="text-center mb-6">
-          <v-icon icon="mdi-timer-cog-outline" size="56" color="primary" />
-          <h1 class="text-h4 font-weight-bold mt-2">Cronoanálise</h1>
-          <p class="text-medium-emphasis">Tempos cronometrados, tempo padrão e capacidade de produção.</p>
+        <div class="mb-4">
+          <div class="rotulo text-primary">Instrumento de tempos e métodos</div>
+          <h1 class="text-h4 font-weight-bold mt-1">Cronoanálise</h1>
+          <p class="text-body-2 text-medium-emphasis">Tempos cronometrados, tempo padrão e capacidade de produção.</p>
         </div>
 
-        <v-card class="pa-6" elevation="2">
+        <v-card class="painel">
+          <v-card-title>Acesso</v-card-title>
+          <div class="pa-5">
           <v-form @submit.prevent="entrar()">
             <v-text-field v-model="login" label="Login" prepend-inner-icon="mdi-account-outline" autocomplete="username"
                           autofocus />
@@ -61,7 +63,7 @@ async function entrar(credenciais = { login: login.value, senha: senha.value }) 
           <template v-if="demoDisponivel">
             <v-divider class="my-6" />
             <div class="text-center">
-              <p class="text-overline text-primary mb-1">Quer só conhecer?</p>
+              <p class="rotulo text-primary mb-1">Quer só conhecer?</p>
               <p class="text-body-2 text-medium-emphasis mb-3">
                 Entre como visitante (<code>{{ DEMO.login }}</code> / <code>{{ DEMO.senha }}</code>), com perfil de aluno:
                 consulta empresas e produtos de exemplo e registra cronoanálises.
@@ -72,9 +74,10 @@ async function entrar(credenciais = { login: login.value, senha: senha.value }) 
               </v-btn>
             </div>
           </template>
+          </div>
         </v-card>
 
-        <AvisoAcademico class="justify-center mt-6" />
+        <AvisoAcademico class="mt-4" />
       </v-col>
     </v-row>
   </v-container>

@@ -93,6 +93,7 @@ $mono: 'Roboto Mono', ui-monospace, monospace;
   color: rgba(var(--v-theme-on-surface), 0.6);
 }
 
+.fundo-grade,
 .grade-tempos {
   background-image:
     linear-gradient(var(--crono-grade) 1px, transparent 1px),
