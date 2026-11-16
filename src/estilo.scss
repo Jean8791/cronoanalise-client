@@ -1,16 +1,108 @@
+// Identidade de instrumento: fontes, linhas finas e leituras numéricas.
+$mono: 'Roboto Mono', ui-monospace, monospace;
+
+.v-theme--crono {
+  --crono-linha: #2c3036;
+  --crono-etiqueta: #181b1f;
+  --crono-grade: rgba(255, 255, 255, 0.035);
+}
+
+.v-theme--crono-claro {
+  --crono-linha: #cfd4d9;
+  --crono-etiqueta: #f3f5f6;
+  --crono-grade: rgba(0, 0, 0, 0.04);
+}
+
+.v-application {
+  font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+// títulos de seção e cabeçalhos de tabela em mono
+.v-application :is(.text-h4, .text-h5, .text-h6, .text-subtitle-1, .text-overline) {
+  font-family: $mono !important;
+  letter-spacing: 0.02em;
+}
+
+.v-application .v-data-table th,
+.v-application .v-table th {
+  font-family: $mono;
+  font-size: 0.7rem !important;
+  font-weight: 500 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.rotulo {
+  font-family: $mono;
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+
+// número grande de mostrador
+.leitura {
+  font-family: $mono;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.leitura small {
+  font-size: 0.9rem;
+  font-weight: 400;
+  opacity: 0.6;
+  margin-left: 0.25rem;
+}
+
+// cartão com borda fina e cabeçalho tipo etiqueta
+.painel {
+  border: 1px solid var(--crono-linha);
+  background: rgb(var(--v-theme-surface));
+}
+
+.painel > .v-card-title {
+  padding: 6px 14px;
+  border-bottom: 1px solid var(--crono-linha);
+  background: var(--crono-etiqueta);
+  font-family: $mono;
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.tabela-numerica td,
+.tabela-numerica th {
+  border-color: var(--crono-linha) !important;
+}
+
 .tabela-numerica td.num,
 .tabela-numerica th.num {
   text-align: right;
+  font-family: $mono;
   font-variant-numeric: tabular-nums;
 }
 
 .formula {
-  font-family: 'Roboto Mono', ui-monospace, monospace;
+  font-family: $mono;
   font-size: 0.85rem;
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(var(--v-theme-on-surface), 0.6);
+}
+
+.fundo-grade,
+.grade-tempos {
+  background-image:
+    linear-gradient(var(--crono-grade) 1px, transparent 1px),
+    linear-gradient(90deg, var(--crono-grade) 1px, transparent 1px);
+  background-size: 16px 16px;
 }
 
 .grade-tempos input {
   text-align: right;
+  font-family: $mono;
   font-variant-numeric: tabular-nums;
 }

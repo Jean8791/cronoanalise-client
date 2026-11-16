@@ -29,7 +29,7 @@ const cartoes = [
 </script>
 
 <template>
-  <v-container class="py-8" style="max-width: 1100px">
+  <v-container class="py-6" style="max-width: 1100px">
     <div class="d-flex flex-wrap align-center justify-space-between ga-4 mb-6">
       <div>
         <h1 class="text-h5 font-weight-bold">Olá, {{ sessao.usuario?.nome?.split(' ')[0] }}</h1>
@@ -40,27 +40,19 @@ const cartoes = [
 
     <v-alert v-if="erro" type="warning" variant="tonal" class="mb-6">{{ erro }}</v-alert>
 
-    <v-row>
-      <v-col v-for="c in cartoes" :key="c.chave" cols="12" sm="4">
-        <v-card :to="{ name: c.rota }" class="pa-4" border flat>
-          <div class="d-flex align-center ga-4">
-            <v-avatar :color="c.cor" variant="tonal" size="48"><v-icon :icon="c.icone" /></v-avatar>
-            <div>
-              <div class="text-caption text-medium-emphasis text-uppercase">{{ c.titulo }}</div>
-              <div class="text-h5 font-weight-bold">
-                <v-progress-circular v-if="carregando" indeterminate size="20" width="2" />
-                <span v-else>{{ totais[c.chave] }}</span>
-              </div>
-            </div>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
+    <div class="faixa mb-4">
+      <router-link v-for="c in cartoes" :key="c.chave" :to="{ name: c.rota }" class="faixa-item">
+        <v-icon :icon="c.icone" size="small" :color="c.cor" />
+        <span class="rotulo">{{ c.titulo }}</span>
+        <v-progress-circular v-if="carregando" indeterminate size="14" width="2" />
+        <span v-else class="leitura faixa-valor">{{ totais[c.chave] }}</span>
+      </router-link>
+    </div>
 
-    <v-row class="mt-2">
+    <v-row dense>
       <v-col cols="12" md="7">
-        <v-card border flat>
-          <v-card-title class="text-subtitle-1 font-weight-bold">Últimas cronoanálises</v-card-title>
+        <v-card class="painel">
+          <v-card-title>Últimas cronoanálises</v-card-title>
           <v-list v-if="recentes.length" lines="two">
             <v-list-item v-for="c in recentes" :key="c.id" :to="{ name: 'cronoanalise', params: { id: c.id } }"
                          :title="`${c.produtoCodigo} · ${c.produtoNome}`"
@@ -71,8 +63,8 @@ const cartoes = [
         </v-card>
       </v-col>
       <v-col cols="12" md="5">
-        <v-card border flat class="h-100">
-          <v-card-title class="text-subtitle-1 font-weight-bold">Como funciona</v-card-title>
+        <v-card class="painel h-100">
+          <v-card-title>Como funciona</v-card-title>
           <v-card-text>
             <ol class="pl-4 text-body-2" style="line-height: 1.8">
               <li>A empresa define o <strong>turno</strong>, as <strong>paradas</strong>, o <strong>fator de velocidade</strong> e o <strong>nível de confiança</strong>.</li>
@@ -86,3 +78,32 @@ const cartoes = [
     </v-row>
   </v-container>
 </template>
+
+<style scoped>
+.faixa {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid var(--crono-linha);
+  background: rgb(var(--v-theme-surface));
+}
+.faixa-item {
+  flex: 1 1 180px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  color: inherit;
+  text-decoration: none;
+  border-right: 1px solid var(--crono-linha);
+}
+.faixa-item:last-child {
+  border-right: 0;
+}
+.faixa-item:hover {
+  background: var(--crono-etiqueta);
+}
+.faixa-valor {
+  font-size: 1.5rem;
+  margin-left: auto;
+}
+</style>

@@ -114,7 +114,7 @@ async function alternarBloqueio(produto) {
 </script>
 
 <template>
-  <v-container class="py-8" style="max-width: 1200px">
+  <v-container class="py-6" style="max-width: 1200px">
     <div class="d-flex flex-wrap align-center justify-space-between ga-4 mb-6">
       <div>
         <h1 class="text-h5 font-weight-bold">Produtos</h1>
@@ -123,7 +123,7 @@ async function alternarBloqueio(produto) {
       <v-btn v-if="sessao.podeGerenciar.value" color="primary" prepend-icon="mdi-plus" @click="abrir()">Novo produto</v-btn>
     </div>
 
-    <v-card border flat>
+    <v-card class="painel">
       <div class="d-flex flex-wrap ga-4 pa-4">
         <v-text-field v-model="busca" placeholder="Buscar por código ou nome" prepend-inner-icon="mdi-magnify" hide-details
                       clearable style="max-width: 320px" />
@@ -132,7 +132,7 @@ async function alternarBloqueio(produto) {
         <v-switch v-if="sessao.podeGerenciar.value" v-model="incluirBloqueados" label="Mostrar bloqueados" color="primary"
                   hide-details inset />
       </div>
-      <v-data-table :headers="cabecalhos" :items="produtos" :loading="carregando" items-per-page="10"
+      <v-data-table density="compact" class="tabela-numerica" :headers="cabecalhos" :items="produtos" :loading="carregando" items-per-page="10"
                     no-data-text="Nenhum produto encontrado." loading-text="Carregando…">
         <template #item.nome="{ item }">
           <span :class="{ 'text-disabled': item.bloqueado }">{{ item.nome }}</span>
