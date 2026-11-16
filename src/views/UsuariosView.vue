@@ -82,7 +82,7 @@ async function alternarBloqueio(u) {
 </script>
 
 <template>
-  <v-container class="py-8" style="max-width: 1100px">
+  <v-container class="py-6" style="max-width: 1100px">
     <div class="d-flex flex-wrap align-center justify-space-between ga-4 mb-6">
       <div>
         <h1 class="text-h5 font-weight-bold">Usuários</h1>
@@ -91,8 +91,8 @@ async function alternarBloqueio(u) {
       <v-btn color="primary" prepend-icon="mdi-account-plus-outline" @click="abrir()">Novo usuário</v-btn>
     </div>
 
-    <v-card border flat>
-      <v-data-table :headers="cabecalhos" :items="usuarios" :loading="carregando" items-per-page="10"
+    <v-card class="painel">
+      <v-data-table density="compact" class="tabela-numerica" :headers="cabecalhos" :items="usuarios" :loading="carregando" items-per-page="10"
                     no-data-text="Nenhum usuário." loading-text="Carregando…">
         <template #item.nome="{ item }">
           <span :class="{ 'text-disabled': item.bloqueado }">{{ item.nome }}</span>

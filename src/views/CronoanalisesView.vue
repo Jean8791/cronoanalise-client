@@ -45,7 +45,7 @@ function abrir(_, { item }) {
 </script>
 
 <template>
-  <v-container class="py-8" style="max-width: 1200px">
+  <v-container class="py-6" style="max-width: 1200px">
     <div class="d-flex flex-wrap align-center justify-space-between ga-4 mb-6">
       <div>
         <h1 class="text-h5 font-weight-bold">Cronoanálises</h1>
@@ -56,12 +56,12 @@ function abrir(_, { item }) {
 
     <v-alert v-if="erro" type="warning" variant="tonal" class="mb-4">{{ erro }}</v-alert>
 
-    <v-card border flat>
+    <v-card class="painel">
       <div class="pa-4">
         <v-text-field v-model="busca" placeholder="Buscar por produto, empresa ou cronoanalista" prepend-inner-icon="mdi-magnify"
                       hide-details clearable style="max-width: 420px" />
       </div>
-      <v-data-table :headers="cabecalhos" :items="itens" :loading="carregando" items-per-page="10" hover
+      <v-data-table density="compact" class="tabela-numerica" :headers="cabecalhos" :items="itens" :loading="carregando" items-per-page="10" hover
                     no-data-text="Nenhuma cronoanálise registrada." loading-text="Carregando…" @click:row="abrir">
         <template #item.criadoEm="{ item }">{{ dataHora(item.criadoEm) }}</template>
         <template #item.produtoNome="{ item }">

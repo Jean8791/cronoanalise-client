@@ -107,7 +107,7 @@ async function alternarBloqueio(empresa) {
 </script>
 
 <template>
-  <v-container class="py-8" style="max-width: 1200px">
+  <v-container class="py-6" style="max-width: 1200px">
     <div class="d-flex flex-wrap align-center justify-space-between ga-4 mb-6">
       <div>
         <h1 class="text-h5 font-weight-bold">Empresas</h1>
@@ -116,14 +116,14 @@ async function alternarBloqueio(empresa) {
       <v-btn v-if="sessao.podeGerenciar.value" color="primary" prepend-icon="mdi-plus" @click="abrir()">Nova empresa</v-btn>
     </div>
 
-    <v-card border flat>
+    <v-card class="painel">
       <div class="d-flex flex-wrap ga-4 pa-4">
         <v-text-field v-model="busca" placeholder="Buscar por nome ou CNPJ" prepend-inner-icon="mdi-magnify" hide-details
                       clearable style="max-width: 360px" />
         <v-switch v-if="sessao.podeGerenciar.value" v-model="incluirBloqueadas" label="Mostrar bloqueadas" color="primary"
                   hide-details inset />
       </div>
-      <v-data-table :headers="cabecalhos" :items="empresas" :loading="carregando" items-per-page="10"
+      <v-data-table density="compact" class="tabela-numerica" :headers="cabecalhos" :items="empresas" :loading="carregando" items-per-page="10"
                     no-data-text="Nenhuma empresa encontrada." loading-text="Carregando…">
         <template #item.nome="{ item }">
           <span :class="{ 'text-disabled': item.bloqueada }">{{ item.nome }}</span>
